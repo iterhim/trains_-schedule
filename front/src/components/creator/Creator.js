@@ -11,9 +11,12 @@ function Creator() {
     };
 
     function handleClick() {
+
         for (const input in inputRef) {
             if (!inputRef[input]?.current?.value) {
                 alert('Failure: field is empty')
+                window.location.reload(false);
+
                 return
             }
 
@@ -24,6 +27,20 @@ function Creator() {
             }
 
         }
+        if(inputRef?.dateStart < '2021-01-01' || '2024-01-01' > inputRef?.dateEnd > '2021-01-01'){
+            alert('Failure: invalid date!')
+            window.location.reload(false);
+
+            return
+        }
+        if(inputRef?.dateStart > inputRef?.dateEnd) {
+            alert('Failure: start data < end data!')
+            window.location.reload(false);
+
+            return
+        }
+
+
         fetch('http://localhost:3000/api/createTrain', {
             method: 'POST', // or 'PUT'
             headers: {
@@ -69,6 +86,8 @@ function Creator() {
 
             />
             <Input
+                min="2022-12-01"
+                max="2023-01-01"
                 type="date"
                 id="dateStartTrain"
                 name="dateStartTrain"
@@ -78,6 +97,8 @@ function Creator() {
                 innerRef={inputRef.dateStart}
             />
             <Input
+                min="2022-12-01"
+                max="2023-01-01"
                 type="date"
                 id="dateEndTrain"
                 name="dateEndTrain"

@@ -28,7 +28,7 @@ function Layout(props) {
             <div>
                 <Navbar color="faded" light>
                     <NavbarBrand href="/" className="me-auto">
-                        reactstrap
+                        Trains
                     </NavbarBrand>
                     <NavbarToggler onClick={toggleNavbar} className="me-2"/>
                     <Collapse isOpen={!collapsed} navbar>

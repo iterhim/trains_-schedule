@@ -9,7 +9,7 @@ function ElemTableWDel(props) {
 
         const data = [...parents]
             .splice(0, 5)
-            .map(el=> el.childNodes[0].value)
+            .map(el => el.childNodes[0].value)
         data.unshift(parents[0].id)
 
         const objData = ({
@@ -19,6 +19,21 @@ function ElemTableWDel(props) {
             dateEnd: data[4],
             cities: data[5],
         })
+
+        if(objData?.dateStart < '2021-01-01' || '2024-01-01' > objData?.dateEnd > '2021-01-01'){
+            alert('Failure: invalid date!')
+            window.location.reload(false);
+
+            return
+        }
+
+        // if(objData?.dateStart <  || > objData?.dateEnd) {}
+        if(objData?.dateStart > objData?.dateEnd) {
+            alert('Failure: start data < end data!')
+            // window.location.reload(false);
+
+            return
+        }
         if (JSON.stringify(train) === JSON.stringify(objData)) {
             return;
         }
@@ -31,7 +46,8 @@ function ElemTableWDel(props) {
         })
             .then((response) => response.json())
             .then((data) => {
-                stateChanger( data );
+                alert('Successful: Edited')
+                stateChanger(data);
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -44,7 +60,7 @@ function ElemTableWDel(props) {
             .splice(0, 5)
             .map(el => el.childNodes[0].value)
         data.unshift(parents[0].id)
-        console.log(data);
+
         const objData = ({
             name: data[1],
             type: data[2],
@@ -52,6 +68,7 @@ function ElemTableWDel(props) {
             dateEnd: data[4],
             cities: data[5],
         })
+
         if (JSON.stringify(train) === JSON.stringify(objData)) {
             return;
         }
@@ -64,8 +81,9 @@ function ElemTableWDel(props) {
         })
             .then((response) => response.json())
             .then((data) => {
+                alert('Successful: Deleted')
 
-                stateChanger( data );
+                stateChanger(data);
 
 
                 if (data.length === 0)
@@ -76,21 +94,30 @@ function ElemTableWDel(props) {
                 console.error('Error:', error);
             });
     }
-    useEffect(()=>{
+    useEffect(() => {
 
         setTrain(props.train)
 
-    },[])
+    }, [])
 
     return (
-        <tr key ={train?._id }>
-                <td id={train?._id}><Input defaultValue={train?.name}/></td>
-                <td><Input defaultValue={train?.type}/></td>
-                <td><Input type="date" defaultValue={train?.dateStart?.split('T')[0]}/></td>
-                <td><Input type="date" defaultValue={train?.dateEnd?.split('T')[0]}/></td>
-                <td><Input defaultValue={train?.cities?.join(', ')}/></td>
-                <td><Button color="secondary" onClick={handleClickEdit}>Edit</Button></td>
-                <td><Button color="secondary" onClick={handleClickDelete}>Delete</Button></td>
+        <tr key={train?._id}>
+            <td id={train?._id}><Input defaultValue={train?.name}/></td>
+            <td><Input defaultValue={train?.type}/></td>
+            <td><Input
+                min="2022-12-01"
+                max="2023-01-01"
+                type="date"
+                defaultValue={train?.dateStart?.split('T')[0]}/></td>
+            <td><Input
+                min="2022-12-01"
+                max="2023-01-01"
+                type="date"
+                defaultValue={train?.dateEnd?.split('T')[0]
+            }/></td>
+            <td><Input defaultValue={train?.cities?.join(', ')}/></td>
+            <td><Button color="secondary" onClick={handleClickEdit}>Edit</Button></td>
+            <td><Button color="secondary" onClick={handleClickDelete}>Delete</Button></td>
         </tr>
     );
 }
